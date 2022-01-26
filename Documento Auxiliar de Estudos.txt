@@ -128,3 +128,5 @@ comportamento não funciona dessa maneira em outros frameworks (o JSP do Java).
 IActionResult => é um retorno das ações (interface) é o tipo generico de toda ação, e pode se desdobrar em alguns tipos específicos. O retorno desse método
 é um método específico para aquela ação. 
 
+
+A continuação desse documento está no site da Udemy.
