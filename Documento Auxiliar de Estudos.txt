@@ -1,0 +1,130 @@
+MVC
+
+	Model: estrutura de dados e suas transformações. O coração do negócio. (Entities, Services, Repositores, etc)
+	Controllers: Recebem e tratam as interações do usuário e o sistema.
+	Views: define a estrutura e o comportamento das telas
+
+Relacionamento:
+View <=> Controller <=> Model (Service Layer, Data Access Layer, Entities)
+
+
+
+FrameWorks para Web services (React, Vue.Js, Angular, JQuery)
+FrameWorks e Templates Engines 
+(spring, Thymeleaf) -> Java  
+(ASP.Net Core e Razor Engine) -> C#
+(Laravel, Blade Template) -> PhP
+
+
+------------------------------------------------------------------------------------------
+Entity Framework
+problemática histórica: Banco de dados diferente com paradigma diferente da OOP.
+
+exemplo de acesso
+
+Client client = null;
+using (connection)
+{
+using (var command = new SqlCommand("SELECT * FROM Clients WHERE Id = @id;", connection))
+{
+command.Parameters.Add(new SqlParameter("@id", id));
+connection.Open();
+using (var reader = command.ExecuteReader())
+{
+if (reader.Read())
+{
+client = new Client();
+client.Id = reader.GetString(0);
+client.Name = reader.GetString(1);
+client.Email = reader.GetString(2);
+client.Phone = reader.GetString(3);
+}
+}
+}
+}
+return client;
+
+E ainda tem: 
+Contexto de persistencia (Alteração, Transação, Concorrência), 
+Mapa de Identidade (controle dos objetos já carregados), 
+Carregamento tardio (Lazy loading)
+
+
+SOLUÇÃO: ORM - OBJECT RELATIONAL MAPPING (Mapeamento Objeto Relacional)
+
+Entity Framework
+
+Providers: implementações de banco de dados específicos (SQL, ORACLE, etc etc)
+
+Principais Classes
+
+DBContext - Estabelece uma conexao com banco de dados
+DbSet<TEntity> representa a coleção de entidades de um dado tipo em um contexto
+
+e como vamos usar?
+
+Linq  = > DbSet = > banco de dados 
+
+
+--------------------------------------------------------------------------------------------------------
+
+ANOTAÇÕES DO PROJETO - Explicação dos arquivos
+
+
+Connected Services - > conexao com serviços externos (Azure, etc)
+
+Dependencies - pacotes Nuggets, SDK, Analisador 
+
+Proprieties - proppriedades do projeto (versão do .Net Core, Arquivos Json, etc etc)
+
+wwwroot - Guardado os arquivos do FrontEnd (Js,CSS) e bibliotecas/recursos do front end.
+
+Controllers - Guarda as classes controladores
+-HomeController.cs => Controla as ações relacionadas a aplicação básica.
+
+Models - Guarda os Models e Views Models. Pastas de Home (tela relacionada ao homeController, responsavel pelo controle das paginas, na pasta Controllers e Views (produtos, clientes))
+-ErrorViewModel.cs
+
+Views - Guardam as telas da aplicação - Criamos as pastas segundo a aplicação
+-Home -  => Abriga as telas relacionadas ao controle
+-About.cshtml
+Contact.cshtml
+Index.cshtml
+Privacy.cshtml 
+
+Shared - Paginas compartilhadas por mais de um controlador (rodapé, cabeçalho), o _layout.cshtml importa outras coisas tbm, como css e js.
+- _CookieConsentPartial.cshtml
+- _Layout.cshtml => O layout básico de todas as páginas, além da importação do bootstrap, css, js.
+- _ValidationScriptsPartial.cshtml
+- Error.cshtml
+
+
+_ViewImports.cshtml => defini bibliotegas gerais.
+
+_ViewStart.cshtml
+
+appsettings.json => contem a configuração de recursos externos (login, banco de dados, etc).
+
+Program.cs => ponto de entrada da aplicação.
+
+Startup.cs => configurações do projeto
+
+
+
+Obs: As páginas usadas são do tipo cshtml (Razor page)
+
+
+
+
+--------------------------------------------------------------------------
+
+HomeController - cada método aqui é uma ação que no seu nome o indicativo de qual operação/pagina está trabalhando. No caso inicial temos
+os métodos Index();About;Privacy();Contact() que tem suas páginas na pasta home... então o controlador HomeController possui as ViewData["Keys"]
+com os valores, e os repassa nas paginas relacionadas com o método (Em home).
+
+obs: Nature Templates => o framework não chama a página About.cshtml ou outra, ele primeiramente chama o controlador, e ele sim chama a página. Esse
+comportamento não funciona dessa maneira em outros frameworks (o JSP do Java).
+
+IActionResult => é um retorno das ações (interface) é o tipo generico de toda ação, e pode se desdobrar em alguns tipos específicos. O retorno desse método
+é um método específico para aquela ação. 
+
