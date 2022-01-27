@@ -10,10 +10,16 @@ View <=> Controller <=> Model (Service Layer, Data Access Layer, Entities)
 
 
 FrameWorks para Web services (React, Vue.Js, Angular, JQuery)
+ - O front end tem grande responsabilidade da montagem da tela, entre outros.
+
+
+
 FrameWorks e Templates Engines 
-(spring, Thymeleaf) -> Java  
-(ASP.Net Core e Razor Engine) -> C#
-(Laravel, Blade Template) -> PhP
+- O back end tem maior responsabilidades que o WS, inclusive na montagem das páginas. 
+
+(spring trabalha com Thymeleaf) -> Java  
+(ASP.Net Core trabalha com o  Razor Engine) -> C#
+(Laravel, trabalha com o Blade Template) -> PhP
 
 
 ------------------------------------------------------------------------------------------
@@ -52,18 +58,22 @@ Carregamento tardio (Lazy loading)
 
 SOLUÇÃO: ORM - OBJECT RELATIONAL MAPPING (Mapeamento Objeto Relacional)
 
-Entity Framework
+Entity Framework é uma ferramenta tipo ORM.
 
-Providers: implementações de banco de dados específicos (SQL, ORACLE, etc etc)
+Providers: implementações de banco de dados específicos (SQL, ORACLE, etc etc).
+
 
 Principais Classes
 
-DBContext - Estabelece uma conexao com banco de dados
+DBContext - Estabelece uma sessão com banco de dados, e encapsula ela.
+- E uma combinação dos padrões Unity to Work e Repository
+
+
 DbSet<TEntity> representa a coleção de entidades de um dado tipo em um contexto
 
 e como vamos usar?
 
-Linq  = > DbSet = > banco de dados 
+Linq  = > | DbSet | = > SQL => | banco de dados | 
 
 
 --------------------------------------------------------------------------------------------------------
@@ -114,8 +124,6 @@ Startup.cs => configurações do projeto
 Obs: As páginas usadas são do tipo cshtml (Razor page)
 
 
-
-
 --------------------------------------------------------------------------
 
 HomeController - cada método aqui é uma ação que no seu nome o indicativo de qual operação/pagina está trabalhando. No caso inicial temos
@@ -130,3 +138,4 @@ IActionResult => é um retorno das ações (interface) é o tipo generico de tod
 
 
 A continuação desse documento está no site da Udemy.
+--------------------------------------------------------------------------------
