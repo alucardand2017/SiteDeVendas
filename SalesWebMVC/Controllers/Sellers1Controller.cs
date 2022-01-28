@@ -39,6 +39,12 @@ namespace SalesWebMVC.Controllers
         //o framework instancia alem do seller, o department, já que colocamos um private com DepartmentId
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index)); //redireciona a ação para o index acima
         }
@@ -82,6 +88,13 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+                
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mistmach" });
