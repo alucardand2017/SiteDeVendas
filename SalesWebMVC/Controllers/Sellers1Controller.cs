@@ -46,10 +46,10 @@ namespace SalesWebMVC.Controllers
             await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index)); //redireciona a ação para o index acima
         }
-        public async  Task<IActionResult> Delete(int? id) //tela de confirmação
+        public async Task<IActionResult> Delete(int? id) //tela de confirmação
         {
             if (id == null)
-                return RedirectToAction(nameof(Error), new {message = "Id not found" });
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             var obj = await _sellerService.FindByIdAsync(id.Value);
             if (obj == null)
                 return RedirectToAction(nameof(Error), new { message = "Id not Provided" });
@@ -59,10 +59,19 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.RemoveAsync(id);
-            return   RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+
+                return RedirectToAction(nameof(Error), new { message = "Não pode apagar vendedor com vendas! " + e.Message });
+            }
+
         }
-        public async  Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
@@ -71,7 +80,7 @@ namespace SalesWebMVC.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             return View(obj);
         }
-        public async Task< IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return RedirectToAction(nameof(Error), new { message = "Id not Provided" });
@@ -84,7 +93,7 @@ namespace SalesWebMVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task< IActionResult> Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             if (!ModelState.IsValid)
             {
@@ -92,7 +101,7 @@ namespace SalesWebMVC.Controllers
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
-                
+
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mistmach" });
@@ -100,7 +109,7 @@ namespace SalesWebMVC.Controllers
 
             try
             {
-               await _sellerService.UpdateAsync(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
             }
             catch (NotFoundException e)
@@ -110,9 +119,9 @@ namespace SalesWebMVC.Controllers
             }
             catch (DbConcurrencyException e)
             {
-                return RedirectToAction(nameof(Error), new { message = e.Message }); 
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-           
+
         }
         public IActionResult Error(string message)
         {
